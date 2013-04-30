@@ -1,0 +1,18 @@
+{
+	"name": "APILaPanacee",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"start": "node ticket.js"
+	},
+	"dependencies": {
+		"express": "3.0.6",
+		"hjs": "*",
+		"less-middleware": "*",
+		"jsdom": "*",
+		"imagemagick": "*",
+		"moment": "*",
+		"xml2js": "*",
+		"node-phantom": "*"
+	}
+}

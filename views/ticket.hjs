@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Ticket</title>
+        <link rel='stylesheet' href='/css/ticket.css' />
+    </head>
+    <body>
+        <div id="content">
+            <p>
+                La Panacée
+                <br/>
+                {{date}}
+                <br/>
+                {{time}}
+            </p>
+            <h1>{{hello}}</h1>
+            <h2>{{&context}}</h2>
+            <h2>{{&what}}</h2>
+            <h3>{{&where}}</h3>
+            <footer><img src="/logo.png" width="512px"/>
+            </footer>
+        </div>
+    </body>
+</html>
