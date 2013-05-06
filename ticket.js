@@ -7,7 +7,7 @@ var express = require('express'), routes = require('./routes'), user = require('
 var app = express();
 
 app.configure(function() {
-	app.set('port', 5090);
+	app.set('port', 5100);
 	app.set('views', __dirname + '/views');
 	app.set('view engine', 'hjs');
 	app.use(express.favicon());

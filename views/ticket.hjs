@@ -6,19 +6,19 @@
     </head>
     <body>
         <div id="content">
+            <header><img src="/logo.png" width="240px"/>
+            </header>
             <p>
-                La Panacée
                 <br/>
                 {{date}}
                 <br/>
                 {{time}}
             </p>
             <h1>{{hello}}</h1>
-            <h2>{{&context}}</h2>
-            <h2>{{&what}}</h2>
+            <h4>{{&context}}</h4>
+            <h2 style="font-size:{{fsize}}%">{{&what}}</h2>
             <h3>{{&where}}</h3>
-            <footer><img src="/logo.png" width="512px"/>
-            </footer>
+            
         </div>
     </body>
 </html>

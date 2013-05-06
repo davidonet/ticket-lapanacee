@@ -29,11 +29,12 @@ exports.index = function(req, res) {
 		date : "Jeudi 18 juillet 2013",
 		time : "15h30",
 		hello : "Bonjour ",
-		context : "Hier soir, dans <em>Delayed</em>, de Matthias Gommel, une femme a dit ceci:",
-		what : "«C’est comme à la maison, tu me laisses jamais finir mes phrases».",
-		where : "Salle 2 - <em>Delayed</em>, Matthias Gommel (2002)"
+		context : "Hier soir, dans <b>Textopoly</b>, spectre a écrit :",
+		what : "                                    court sur le chemin et retient la terre dans sa main refermée en poing",
+		where : "<b>http://www.textopoly.org</b>"
 
 	};
+	data.fsize = 200-15*Math.sqrt((data.what.length-100)/8);
 	if ((moment().dayOfYear(1).year(0).isAfter(sunset)) && (moment().dayOfYear(1).year(0).isAfter(sunrise)))
 		data.hello = "Bonsoir ";
 	data.date = moment().format("dddd D MMMM YYYY");
@@ -49,7 +50,7 @@ var querystring = require("querystring");
 exports.submit = function(req, res) {
 	phantom.create(function(err, ph) {
 		ph.createPage(function(err, page) {
-			var url = "http://localhost:5090/ticket/" + encodeURIComponent(req.body.name);
+			var url = "http://localhost:5100/ticket/" + encodeURIComponent(req.body.name);
 			page.open(url, function() {
 				page.viewportSize = {
 					width : 640,
