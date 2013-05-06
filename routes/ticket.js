@@ -3,6 +3,9 @@ var http = require('http');
 var request = require('request');
 var parseString = require('xml2js').parseString;
 var async = require('async');
+var phantom = require('node-phantom');
+var childProcess = require('child_process');
+var querystring = require("querystring");
 
 moment.lang("fr");
 sunrise = moment("06:00", "HH:mm");
@@ -89,16 +92,16 @@ exports.index = function(req, res) {
 	});
 };
 
-var phantom = require('node-phantom');
-var childProcess = require('child_process');
-var querystring = require("querystring");
-
 exports.submit = function(req, res) {
 	var it = new Array(req.body.number);
 	for (var i = 0; i < req.body.number; i++)
 		it[i] = i;
 	console.log(it);
+	var pf = "";
+	var wf = "";
 	async.each(it, function(item, fn) {
+		wf += '/tmp/' + item + 'ticket.png ';
+		pf += '/tmp/' + item + 'ticket_th.png ';
 		phantom.create(function(err, ph) {
 			ph.createPage(function(err, page) {
 				var url = "http://localhost:5100/ticket";
@@ -109,11 +112,11 @@ exports.submit = function(req, res) {
 						width : 640,
 						height : 800
 					};
-					console.log('rendering');
 					page.render('/tmp/' + item + 'ticket.png', function() {
+						
 						ph.exit();
-						console.log('printing');
 						var conProc = childProcess.exec('convert /tmp/' + item + 'ticket.png -scale 609x -black-threshold 70% -depth 1 /tmp/' + item + 'ticket_th.png', function(error, stdout, stderr) {
+							
 							if (error) {
 								console.log(error.stack);
 								console.log('Error code: ' + error.code);
@@ -121,25 +124,38 @@ exports.submit = function(req, res) {
 							}
 						});
 						conProc.on('exit', function(code) {
-
-							childProcess.exec('lpr /tmp/' + item + 'ticket_th.png', function(error, stdout, stderr) {
-								if (error) {
-									console.log(error.stack);
-									console.log('Error code: ' + error.code);
-									console.log('Signal received: ' + error.signal);
-								}
-								childProcess.exec('rm -f /tmp/' + item + 'ticket_th.png', function(error, stdout, stderr) {
-									fn();
-								});
-							});
+							fn();
 						});
-
 					});
-
 				});
 			});
 		});
 	}, function(err) {
-		res.redirect('/');
+		console.log(pf);
+		var printProc = childProcess.exec('lpr ' + pf, function(error, stdout, stderr) {
+			if (error) {
+				console.log(error.stack);
+				console.log('Error code: ' + error.code);
+				console.log('Signal received: ' + error.signal);
+			}
+		});
+
+		printProc.on('exit', function(code) {
+			childProcess.exec('rm -f ' + pf, function(error, stdout, stderr) {
+				if (error) {
+					console.log(error.stack);
+					console.log('Error code: ' + error.code);
+					console.log('Signal received: ' + error.signal);
+				}
+			});
+			childProcess.exec('rm -f ' + wf, function(error, stdout, stderr) {
+				if (error) {
+					console.log(error.stack);
+					console.log('Error code: ' + error.code);
+					console.log('Signal received: ' + error.signal);
+				}
+			});
+			res.redirect('/');
+		});
 	});
 };

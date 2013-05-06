@@ -2,7 +2,7 @@
  * Module dependencies.
  */
 
-var express = require('express'), routes = require('./routes'), user = require('./routes/user'), img = require('./routes/img'), ticket = require('./routes/ticket'), http = require('http'), path = require('path');
+var express = require('express'), routes = require('./routes'), img = require('./routes/img'), ticket = require('./routes/ticket'), http = require('http'), path = require('path');
 
 var app = express();
 
@@ -26,7 +26,6 @@ app.configure('development', function() {
 });
 
 app.get('/', routes.index);
-app.get('/users', user.list);
 app.get('/ticket/:name', ticket.index);
 app.post('/ticket/submitTicket', ticket.submit);
 app.get('/ticket', ticket.index);
