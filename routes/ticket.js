@@ -1,6 +1,9 @@
 var moment = require('moment');
 var http = require('http');
+var request = require('request');
 var parseString = require('xml2js').parseString;
+var async = require('async');
+
 moment.lang("fr");
 sunrise = moment("06:00", "HH:mm");
 sunset = moment("18:00", "HH:mm");
@@ -24,6 +27,33 @@ exports.updateDaylight = function(req, res) {
 	});
 };
 
+var ano = [];
+
+request.post('http://www.gunof.net/names/generateAjax', {
+	form : {
+		"data[nation]" : 'old_french',
+		"data[gender]" : "M",
+		"data[num]" : 30
+	}
+}, function(error, response, body) {
+	if (!error && response.statusCode == 200) {
+		var aLst = JSON.parse(body).names;
+
+		request.post('http://www.gunof.net/names/generateAjax', {
+			form : {
+				"data[nation]" : 'old_french',
+				"data[gender]" : "F",
+				"data[num]" : 30
+			}
+		}, function(error, response, body) {
+			if (!error && response.statusCode == 200) {
+				var aLst1 = JSON.parse(body).names;
+				ano = ano.concat(aLst, aLst1);
+			}
+		});
+	}
+});
+
 exports.index = function(req, res) {
 	var data = {
 		date : "Jeudi 18 juillet 2013",
@@ -34,13 +64,29 @@ exports.index = function(req, res) {
 		where : "<b>http://www.textopoly.org</b>"
 
 	};
-	data.fsize = 200-15*Math.sqrt((data.what.length-100)/8);
-	if ((moment().dayOfYear(1).year(0).isAfter(sunset)) && (moment().dayOfYear(1).year(0).isAfter(sunrise)))
-		data.hello = "Bonsoir ";
-	data.date = moment().format("dddd D MMMM YYYY");
-	data.time = moment().format("HH[h]mm");
-	data.hello += (req.params.name ? req.params.name : " A. Nonyme")
-	res.render('ticket', data);
+	http.get({
+		host : "api.lapan.ac",
+		path : "/textopoly/pickTxt"
+	}).on('response', function(response) {
+		response.setEncoding('utf8');
+		response.on('data', function(rTxt) {
+			var txt = JSON.parse(rTxt);
+			data.what = txt.t;
+			data.what.replace(/\s+/g, " ");
+			data.fsize = 200 - 15 * Math.sqrt((data.what.length - 100) / 8);
+			data.context = txt.mt + "<br/>dans TEXTOPOLY<br/>" + txt.a + " a écrit : ";
+			if ((moment().dayOfYear(1).year(0).isAfter(sunset)) && (moment().dayOfYear(1).year(0).isAfter(sunrise)))
+				data.hello = "Bonsoir ";
+			data.date = moment().format("dddd D MMMM YYYY");
+			data.time = moment().format("HH[h]mm");
+			if (req.params.name)
+				data.hello += req.params.name;
+			else
+				data.hello += ano[Math.floor(Math.random() * ano.length)];
+			res.render('ticket', data);
+
+		});
+	});
 };
 
 var phantom = require('node-phantom');
@@ -48,39 +94,52 @@ var childProcess = require('child_process');
 var querystring = require("querystring");
 
 exports.submit = function(req, res) {
-	phantom.create(function(err, ph) {
-		ph.createPage(function(err, page) {
-			var url = "http://localhost:5100/ticket/" + encodeURIComponent(req.body.name);
-			page.open(url, function() {
-				page.viewportSize = {
-					width : 640,
-					height : 800
-				};
-
-				page.render('/tmp/ticket.png');
-				res.redirect('/');
-				setTimeout(function() {
-					ph.exit();
-					var conProc = childProcess.exec('convert /tmp/ticket.png -scale 609x -black-threshold 70% -depth 1 /tmp/ticket_th.png', function(error, stdout, stderr) {
-						if (error) {
-							console.log(error.stack);
-							console.log('Error code: ' + error.code);
-							console.log('Signal received: ' + error.signal);
-						}
-					});
-					conProc.on('exit', function(code) {
-						
-						childProcess.exec('lpr /tmp/ticket_th.png', function(error, stdout, stderr) {
+	var it = new Array(req.body.number);
+	for (var i = 0; i < req.body.number; i++)
+		it[i] = i;
+	console.log(it);
+	async.each(it, function(item, fn) {
+		phantom.create(function(err, ph) {
+			ph.createPage(function(err, page) {
+				var url = "http://localhost:5100/ticket";
+				if (req.body.name)
+					url += "/" + encodeURIComponent(req.body.name);
+				page.open(url, function() {
+					page.viewportSize = {
+						width : 640,
+						height : 800
+					};
+					console.log('rendering');
+					page.render('/tmp/' + item + 'ticket.png', function() {
+						ph.exit();
+						console.log('printing');
+						var conProc = childProcess.exec('convert /tmp/' + item + 'ticket.png -scale 609x -black-threshold 70% -depth 1 /tmp/' + item + 'ticket_th.png', function(error, stdout, stderr) {
 							if (error) {
 								console.log(error.stack);
 								console.log('Error code: ' + error.code);
 								console.log('Signal received: ' + error.signal);
 							}
 						});
+						conProc.on('exit', function(code) {
+
+							childProcess.exec('lpr /tmp/' + item + 'ticket_th.png', function(error, stdout, stderr) {
+								if (error) {
+									console.log(error.stack);
+									console.log('Error code: ' + error.code);
+									console.log('Signal received: ' + error.signal);
+								}
+								childProcess.exec('rm -f /tmp/' + item + 'ticket_th.png', function(error, stdout, stderr) {
+									fn();
+								});
+							});
+						});
+
 					});
-				}, 200);
-				
+
+				});
 			});
 		});
+	}, function(err) {
+		res.redirect('/');
 	});
 };

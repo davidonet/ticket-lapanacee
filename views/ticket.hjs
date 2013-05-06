@@ -16,7 +16,7 @@
             </p>
             <h1>{{hello}}</h1>
             <h4>{{&context}}</h4>
-            <h2 style="font-size:{{fsize}}%">{{&what}}</h2>
+            <h2 style="font-size:{{fsize}}%;">{{&what}}</h2>
             <h3>{{&where}}</h3>
             
         </div>
