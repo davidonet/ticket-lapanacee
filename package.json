@@ -13,6 +13,8 @@
 		"imagemagick": "*",
 		"moment": "*",
 		"xml2js": "*",
-		"node-phantom": "*"
+		"node-phantom": "*",
+		"redis":"*",
+		"hiredis":"*"
 	}
 }
