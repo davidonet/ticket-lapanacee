@@ -8,7 +8,7 @@ fs.readFile('data/panacee.svg', function(err, xml) {
 		throw err;
 	jsdom.env({
 		html : xml,
-		scripts : ['http://code.jquery.com/jquery-1.6.min.js']
+		scripts : ['http://localhost:5100/js/lib/jquery-1.9.1.min.js']
 	}, function(err, window) {
 		$ = window.jQuery;
 		$('g').attr('transform', 'translate(32 0)');

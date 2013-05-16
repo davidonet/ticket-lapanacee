@@ -16,7 +16,24 @@ define([], function() {
 			});
 			okIc.transform("t" + (xcenter + 85) + "," + (ycenter + 85) + "s1.5");
 			paper.setFinish().click(function() {
-				console.log("OK", curName);
+				$.ajax({
+					type : "POST",
+					url : "/ticket/submitTicket",
+					data : {
+						name : curName,
+						type : "One",
+						number : 1
+					},
+					success : function() {
+						curName = '';
+						letSet.attr("opacity", 0.5);
+						$.get("/queryname", function(data) {
+							letSet.remove();
+							letSet.clear();
+							drawLetters(data);
+						});
+					}
+				})
 			});
 
 			// Cancel Icon
