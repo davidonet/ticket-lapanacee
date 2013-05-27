@@ -62,9 +62,10 @@ exports.index = function(req, res) {
 		date : "Jeudi 18 juillet 2013",
 		time : "15h30",
 		hello : "Bonjour ",
+		bighi : "BJR",
 		context : "Hier soir, dans <b>Textopoly</b>, spectre a écrit :",
 		what : "                                    court sur le chemin et retient la terre dans sa main refermée en poing",
-		where : "<b>http://www.textopoly.org</b>"
+		where : "www.textopoly.org"
 
 	};
 	http.get({
@@ -77,15 +78,33 @@ exports.index = function(req, res) {
 			data.what = txt.t;
 			data.what.replace(/\s+/g, " ");
 			data.fsize = 200 - 15 * Math.sqrt((data.what.length - 100) / 8);
-			data.context = txt.mt + "<br/>dans TEXTOPOLY<br/>" + txt.a + " a écrit : ";
+			data.context = txt.mt + " dans<br/><em>" + data.where + "</em><br/>" + txt.a + " a écrit : ";
 			if ((moment().dayOfYear(1).year(0).isAfter(sunset)) && (moment().dayOfYear(1).year(0).isAfter(sunrise)))
 				data.hello = "Bonsoir ";
 			data.date = moment().format("dddd D MMMM YYYY");
 			data.time = moment().format("HH[h]mm");
-			if (req.params.name)
-				data.hello += req.params.name;
-			else
-				data.hello += ano[Math.floor(Math.random() * ano.length)];
+			if (!req.params.name)
+				req.params.name = ano[Math.floor(Math.random() * ano.length)];
+			data.hello += req.params.name;
+
+			data.bigname = req.params.name[0];
+			var dashpos = req.params.name.indexOf('-');
+			if (0 < dashpos) {
+				data.bigname += '-';
+				data.bigname += req.params.name[dashpos + 1];
+			} else {
+				var name = req.params.name.slice(1, -1).replace(/[aeiou]/ig, '');
+				if (1 < name.length)
+					data.bigname += name[Math.floor(1 + ((name.length - 1) * Math.random()))];
+				else
+					data.bigname += name[0];
+				data.bigname += req.params.name[req.params.name.length - 1];
+			}
+			data.bigname = data.bigname.toUpperCase();
+			data.context = data.hello + '<br/>' + data.context;
+
+			data.fsign = (Math.random() < 0.5 ? '-' : '+');
+
 			res.render('ticket', data);
 
 		});
@@ -110,13 +129,13 @@ exports.submit = function(req, res) {
 				page.open(url, function() {
 					page.viewportSize = {
 						width : 640,
-						height : 800
+						height : 1024
 					};
 					page.render('/tmp/' + item + 'ticket.png', function() {
-						
+
 						ph.exit();
-						var conProc = childProcess.exec('convert /tmp/' + item + 'ticket.png -scale 609x -black-threshold 70% -depth 1 /tmp/' + item + 'ticket_th.png', function(error, stdout, stderr) {
-							
+						var conProc = childProcess.exec('convert /tmp/' + item + 'ticket.png  -scale 609x -black-threshold 70% -depth 1 /tmp/' + item + 'ticket_th.png', function(error, stdout, stderr) {
+
 							if (error) {
 								console.log(error.stack);
 								console.log('Error code: ' + error.code);
