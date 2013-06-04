@@ -75,10 +75,10 @@ exports.index = function(req, res) {
 		response.setEncoding('utf8');
 		response.on('data', function(rTxt) {
 			var txt = JSON.parse(rTxt);
-			data.what = txt.t;
-			data.what.replace(/\s+/g, " ");
-			data.fsize = 200 - 15 * Math.sqrt((data.what.length - 100) / 8);
-			data.context = txt.mt + " dans<br/><em>" + data.where + "</em><br/>" + txt.a + " a écrit : ";
+			data.what = txt.t.replace(/\s+/g,' ');
+			data.fsize = 40-Math.floor(3 * Math.sqrt((data.what.length/6)));
+			console.log(data.what.length,data.what)
+			data.context = txt.mt + "<br/>" + txt.a + " a écrit dans<br/><em>" + data.where + "</em>";
 			if ((moment().dayOfYear(1).year(0).isAfter(sunset)) && (moment().dayOfYear(1).year(0).isAfter(sunrise)))
 				data.hello = "Bonsoir ";
 			data.date = moment().format("dddd D MMMM YYYY");
@@ -103,7 +103,7 @@ exports.index = function(req, res) {
 			data.bigname = data.bigname.toUpperCase();
 			data.context = data.hello + '<br/>' + data.context;
 
-			data.fsign = (Math.random() < 0.5 ? '-' : '+');
+			data.fsign = (Math.random() < 0.5 ? '-' : '+') + Math.floor(10+Math.random()*5);
 
 			res.render('ticket', data);
 

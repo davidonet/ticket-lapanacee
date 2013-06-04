@@ -13,7 +13,7 @@
         <div class="bighello">
             {{bighi}}
         </div>
-        <div class="content" style="font-size:{{fsize}}%;-webkit-transform: skew(0deg,{{fsign}}15deg);">
+        <div class="content" style="font-size:{{fsize}}pt;-webkit-transform: skew(0deg,{{fsign}}deg);">
             {{&what}}
         </div>
         <div class="bigname">
