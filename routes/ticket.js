@@ -6,6 +6,9 @@ var async = require('async');
 var phantom = require('node-phantom');
 var childProcess = require('child_process');
 var querystring = require("querystring");
+request.defaults({proxy:process.env.HTTP_PROXY});
+
+
 
 moment.lang("fr");
 sunrise = moment("06:00", "HH:mm");
@@ -33,6 +36,7 @@ exports.updateDaylight = function(req, res) {
 var ano = [];
 
 request.post('http://www.gunof.net/names/generateAjax', {
+proxy:process.env.HTTP_PROXY,
 	form : {
 		"data[nation]" : 'old_french',
 		"data[gender]" : "M",
@@ -43,6 +47,7 @@ request.post('http://www.gunof.net/names/generateAjax', {
 		var aLst = JSON.parse(body).names;
 
 		request.post('http://www.gunof.net/names/generateAjax', {
+proxy:process.env.HTTP_PROXY,
 			form : {
 				"data[nation]" : 'old_french',
 				"data[gender]" : "F",
@@ -68,13 +73,9 @@ exports.index = function(req, res) {
 		where : "www.textopoly.org"
 
 	};
-	http.get({
-		host : "api.lapan.ac",
-		path : "/textopoly/pickTxt"
-	}).on('response', function(response) {
-		response.setEncoding('utf8');
-		response.on('data', function(rTxt) {
-			var txt = JSON.parse(rTxt);
+	request.get("http://api.lapan.ac/textopoly/pickTxt",{proxy:process.env.HTTP_PROXY} ,function(error,response,body) {
+		
+			var txt = JSON.parse(body);
 			data.what = txt.t.replace(/\s+/g,' ');
 			data.fsize = 40-Math.floor(3 * Math.sqrt((data.what.length/6)));
 			console.log(data.what.length,data.what)
@@ -107,7 +108,7 @@ exports.index = function(req, res) {
 
 			res.render('ticket', data);
 
-		});
+		
 	});
 };
 
