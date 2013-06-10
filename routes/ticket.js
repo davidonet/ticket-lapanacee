@@ -37,6 +37,43 @@ exports.updateDaylight = function(req, res) {
 
 exports.updateDaylight();
 
+function textopolyGet(data, fn) {
+	request.get("http://api.lapan.ac/textopoly/pickTxt", {
+		proxy : process.env.HTTP_PROXY
+	}, function(error, response, body) {
+		var txt = JSON.parse(body);
+		data.what = txt.t.replace(/\s+/g, ' ');
+		data.fsize = 42 - Math.floor(3 * Math.sqrt((data.what.length / 6)));
+		if (data.what.length < 5) {
+			data.fsize = 300;
+			data.what = "?!";
+		}
+		data.context = txt.mt + " " + txt.a + " dans<br/><em>www.textopoly.org</em>";
+		fn(data);
+	});
+}
+
+function microblogGet(data, fn) {
+	request.get("http://pan.lapanacee.org/api/mb", {
+		proxy : process.env.HTTP_PROXY
+	}, function(error, response, body) {
+		var mb = JSON.parse(body).microblog[0].post;
+		console.log(mb.b);
+		data.what = mb.b.replace(/\n/g, '<br/>');
+		;
+		data.fsize = 42 - Math.floor(3 * Math.sqrt((data.what.length / 6)));
+		if (data.what.length < 5) {
+			data.fsize = 300;
+			data.what = "?!";
+		}
+		if (mb.i !== "")
+			data.what = "<img src='" + mb.i + "'/>";
+		data.context = moment.unix(mb.d).fromNow()+" dans<br/><em>mb.lapanacee.org</em>";
+		+" " + mb.a;
+		fn(data);
+	});
+}
+
 exports.index = function(req, res) {
 	var data = {
 		date : "Jeudi 18 juillet 2013",
@@ -44,50 +81,47 @@ exports.index = function(req, res) {
 		hello : "Bonjour ",
 		bighi : "BJR",
 		context : "",
-		where : "www.textopoly.org"
 
 	};
-	request.get("http://api.lapan.ac/textopoly/pickTxt", {
-		proxy : process.env.HTTP_PROXY
-	}, function(error, response, body) {
 
-		var txt = JSON.parse(body);
-		data.what = txt.t.replace(/\s+/g, ' ');
-		data.fsize = 40 - Math.floor(3 * Math.sqrt((data.what.length / 6)));
-		console.log(data.what.length, data.what)
-		data.context = txt.mt + " " + txt.a + " a écrit dans<br/><em>" + data.where + "</em>";
-		if ((moment().dayOfYear(1).year(0).isAfter(sunset)) && (moment().dayOfYear(1).year(0).isAfter(sunrise))) {
-			data.hello = "Bonsoir ";
-			data.bighi = "BSR ";
-		}
-		data.date = moment().format("dddd D MMMM YYYY");
-		data.time = moment().format("HH[h]mm");
-		if (!req.params.name) {
-			data.bigname = '~~~';
+	if ((moment().dayOfYear(1).year(0).isAfter(sunset)) && (moment().dayOfYear(1).year(0).isAfter(sunrise))) {
+		data.hello = "Bonsoir ";
+		data.bighi = "BSR ";
+	}
+	data.date = moment().format("dddd D MMMM YYYY");
+	data.time = moment().format("HH[h]mm");
+	if ((!req.params.name) || (req.params.name.length < 2)) {
+		req.params.name = "";
+		data.bigname = '~~~';
+	} else {
+
+		if (req.params.name.length < 3)
+			req.params.name = req.params.name[0] + " " + req.params.name[1];
+
+		data.bigname = req.params.name[0];
+		data.hello += req.params.name;
+
+		var dashpos = req.params.name.indexOf('-');
+		if (0 < dashpos) {
+			data.bigname += '-';
+			data.bigname += req.params.name[dashpos + 1];
 		} else {
-			data.bigname = req.params.name[0];
-			data.hello += req.params.name;
-
-			var dashpos = req.params.name.indexOf('-');
-			if (0 < dashpos) {
-				data.bigname += '-';
-				data.bigname += req.params.name[dashpos + 1];
-			} else {
-				var name = req.params.name.slice(1, -1).replace(/[aeiou]/ig, '');
-				if (1 < name.length)
-					data.bigname += name[Math.floor(1 + ((name.length - 1) * Math.random()))];
-				else
-					data.bigname += name[0];
-				data.bigname += req.params.name[req.params.name.length - 1];
-			}
-			data.bigname = data.bigname.toUpperCase();
+			var name = req.params.name.slice(1, -1).replace(/[aeiou]/ig, '');
+			if (1 < name.length)
+				data.bigname += name[Math.floor(1 + ((name.length - 1) * Math.random()))];
+			else
+				data.bigname += name[0];
+			data.bigname += req.params.name[req.params.name.length - 1];
 		}
+		data.bigname = data.bigname.toUpperCase();
+	}
+	data.fsign = (Math.random() < 0.5 ? '-' : '+') + Math.floor(10 + Math.random() * 5);
+
+	var funChoice = [microblogGet, textopolyGet];
+
+	funChoice[Math.floor(funChoice.length*Math.random())](data, function(data) {
 		data.context = data.hello + '<br/>' + data.context;
-
-		data.fsign = (Math.random() < 0.5 ? '-' : '+') + Math.floor(10 + Math.random() * 5);
-
 		res.render('ticket', data);
-
 	});
 };
 
