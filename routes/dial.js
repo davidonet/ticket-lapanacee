@@ -1,11 +1,14 @@
 exports.index = function(req, res) {
-	red.smembers('_root', function(err, ret) {
-		ret.sort();
-		res.render('dial', {
-			title : 'La Panacée',
-			letters : JSON.stringify(ret.sort())
-		});
+	var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ-";
+	var letters = [];
+	for (var i in alphabet) {
+		letters.push(alphabet[i]);
+	}
+	res.render('dial', {
+		title : 'La Panacée',
+		letters :  JSON.stringify(letters)
 	});
+
 };
 
 var fs = require("fs");
