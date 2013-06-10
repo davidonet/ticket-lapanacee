@@ -1,9 +1,9 @@
-define([], function() {
+define(['dial_letter'], function(letter) {
 	return {
 		setup : function() {
 			// White circle
 
-			var circle = paper.circle(xcenter, ycenter, height / 2);
+			var circle = paper.circle(xcenter, ycenter, height / 2.05);
 			circle.attr("fill", "white");
 			circle.attr("stroke", "none");
 
@@ -16,6 +16,7 @@ define([], function() {
 			});
 			okIc.transform("t" + (xcenter + 85) + "," + (ycenter + 85) + "s1.5");
 			paper.setFinish().click(function() {
+				letter.animate();
 				$.ajax({
 					type : "POST",
 					url : "/ticket/submitTicket",
@@ -26,12 +27,7 @@ define([], function() {
 					},
 					success : function() {
 						curName = '';
-						letSet.attr("opacity", 0.5);
-						$.get("/queryname", function(data) {
-							letSet.remove();
-							letSet.clear();
-							drawLetters(data);
-						});
+						letter.update();
 					}
 				})
 			});
@@ -46,12 +42,8 @@ define([], function() {
 			cancelIc.transform("t" + (xcenter - 117) + "," + (ycenter + 85) + "s1.7");
 			paper.setFinish().click(function() {
 				curName = '';
-				letSet.attr("opacity", 0.5);
-				$.get("/queryname", function(data) {
-					letSet.remove();
-					letSet.clear();
-					drawLetters(data);
-				});
+				letter.update();
+
 			});
 
 			// Back Icon
@@ -63,13 +55,8 @@ define([], function() {
 			});
 			backIc.transform("t" + (xcenter - 15) + "," + (ycenter - 115) + "s1.5");
 			paper.setFinish().click(function() {
-				curName = curName.slice(0, curName.length - 1);
-				letSet.attr("opacity", 0.5);
-				$.get("/queryname/" + curName, function(data) {
-					letSet.remove();
-					letSet.clear();
-					drawLetters(data);
-				});
+				curName = curName.slice(0, curName.length - 1); l
+				letter.update();
 			});
 		}
 	}
