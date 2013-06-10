@@ -6,9 +6,9 @@ var async = require('async');
 var phantom = require('node-phantom');
 var childProcess = require('child_process');
 var querystring = require("querystring");
-request.defaults({proxy:process.env.HTTP_PROXY});
-
-
+request.defaults({
+	proxy : process.env.HTTP_PROXY
+});
 
 moment.lang("fr");
 sunrise = moment("06:00", "HH:mm");
@@ -24,43 +24,18 @@ exports.updateDaylight = function(req, res) {
 			parseString(data, function(err, result) {
 				sunrise = moment(result.sun.morning[0].sunrise[0], "HH:mm");
 				sunset = moment(result.sun.evening[0].sunset[0], "HH:mm");
-				res.json({
-					sunrise : sunrise,
-					sunset : sunset
-				});
+				console.log(sunrise._i, sunset._i);
+				if (res)
+					res.json({
+						sunrise : sunrise,
+						sunset : sunset
+					});
 			});
 		});
 	});
 };
 
-var ano = [];
-
-request.post('http://www.gunof.net/names/generateAjax', {
-proxy:process.env.HTTP_PROXY,
-	form : {
-		"data[nation]" : 'old_french',
-		"data[gender]" : "M",
-		"data[num]" : 30
-	}
-}, function(error, response, body) {
-	if (!error && response.statusCode == 200) {
-		var aLst = JSON.parse(body).names;
-
-		request.post('http://www.gunof.net/names/generateAjax', {
-proxy:process.env.HTTP_PROXY,
-			form : {
-				"data[nation]" : 'old_french',
-				"data[gender]" : "F",
-				"data[num]" : 30
-			}
-		}, function(error, response, body) {
-			if (!error && response.statusCode == 200) {
-				var aLst1 = JSON.parse(body).names;
-				ano = ano.concat(aLst, aLst1);
-			}
-		});
-	}
-});
+exports.updateDaylight();
 
 exports.index = function(req, res) {
 	var data = {
@@ -68,27 +43,31 @@ exports.index = function(req, res) {
 		time : "15h30",
 		hello : "Bonjour ",
 		bighi : "BJR",
-		context : "Hier soir, dans <b>Textopoly</b>, spectre a écrit :",
-		what : "                                    court sur le chemin et retient la terre dans sa main refermée en poing",
+		context : "",
 		where : "www.textopoly.org"
 
 	};
-	request.get("http://api.lapan.ac/textopoly/pickTxt",{proxy:process.env.HTTP_PROXY} ,function(error,response,body) {
-		
-			var txt = JSON.parse(body);
-			data.what = txt.t.replace(/\s+/g,' ');
-			data.fsize = 40-Math.floor(3 * Math.sqrt((data.what.length/6)));
-			console.log(data.what.length,data.what)
-			data.context = txt.mt + "<br/>" + txt.a + " a écrit dans<br/><em>" + data.where + "</em>";
-			if ((moment().dayOfYear(1).year(0).isAfter(sunset)) && (moment().dayOfYear(1).year(0).isAfter(sunrise)))
-				data.hello = "Bonsoir ";
-			data.date = moment().format("dddd D MMMM YYYY");
-			data.time = moment().format("HH[h]mm");
-			if (!req.params.name)
-				req.params.name = ano[Math.floor(Math.random() * ano.length)];
+	request.get("http://api.lapan.ac/textopoly/pickTxt", {
+		proxy : process.env.HTTP_PROXY
+	}, function(error, response, body) {
+
+		var txt = JSON.parse(body);
+		data.what = txt.t.replace(/\s+/g, ' ');
+		data.fsize = 40 - Math.floor(3 * Math.sqrt((data.what.length / 6)));
+		console.log(data.what.length, data.what)
+		data.context = txt.mt + " " + txt.a + " a écrit dans<br/><em>" + data.where + "</em>";
+		if ((moment().dayOfYear(1).year(0).isAfter(sunset)) && (moment().dayOfYear(1).year(0).isAfter(sunrise))) {
+			data.hello = "Bonsoir ";
+			data.bighi = "BSR ";
+		}
+		data.date = moment().format("dddd D MMMM YYYY");
+		data.time = moment().format("HH[h]mm");
+		if (!req.params.name) {
+			data.bigname = '~~~';
+		} else {
+			data.bigname = req.params.name[0];
 			data.hello += req.params.name;
 
-			data.bigname = req.params.name[0];
 			var dashpos = req.params.name.indexOf('-');
 			if (0 < dashpos) {
 				data.bigname += '-';
@@ -102,13 +81,13 @@ exports.index = function(req, res) {
 				data.bigname += req.params.name[req.params.name.length - 1];
 			}
 			data.bigname = data.bigname.toUpperCase();
-			data.context = data.hello + '<br/>' + data.context;
+		}
+		data.context = data.hello + '<br/>' + data.context;
 
-			data.fsign = (Math.random() < 0.5 ? '-' : '+') + Math.floor(10+Math.random()*5);
+		data.fsign = (Math.random() < 0.5 ? '-' : '+') + Math.floor(10 + Math.random() * 5);
 
-			res.render('ticket', data);
+		res.render('ticket', data);
 
-		
 	});
 };
 
