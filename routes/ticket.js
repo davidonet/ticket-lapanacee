@@ -66,7 +66,7 @@ function microblogGet(data, fn) {
 		}
 		if (mb.i !== "")
 			data.what = "<img src='" + mb.i + "'/>";
-		data.context = moment.unix(mb.d).fromNow() + " dans<br/><em>www.lapanacee.org/fil</em>"; +" " + mb.a;
+		data.context = "Message envoyé "+ moment.unix(mb.d).fromNow();
 		fn(data);
 	});
 }
@@ -114,7 +114,7 @@ exports.index = function(req, res) {
 	}
 	data.fsign = (Math.random() < 0.5 ? '-' : '+') + Math.floor(10 + Math.random() * 5);
 
-	var funChoice = [microblogGet,microblogGet,microblogGet, textopolyGet];
+	var funChoice = microblogGet;	
 
 	funChoice[Math.floor(funChoice.length*Math.random())](data, function(data) {
 		data.context = data.hello + '<br/>' + data.context;
