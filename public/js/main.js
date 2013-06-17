@@ -4,4 +4,5 @@ requirejs.config({
 	}
 });
 require(["jquery", "lib/jquery.form"], function($) {
+	
 });

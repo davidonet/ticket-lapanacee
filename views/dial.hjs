@@ -8,7 +8,13 @@
         <script data-main="js/dial.js" src="js/lib/require-jquery.js"></script>
     </head>
     <body>
-        
+        <div class='info'>
+        <ol>
+        <li>Écrivez votre prénom</li>
+        <li>Touchez &nbsp; &nbsp;<svg width="64px" height="32px" style="transform:scale(2)"><path fill="#ffffff" stroke="none" d="M2.379,14.729L5.208,11.899L12.958,19.648L25.877,6.733L28.707,9.561L12.958,25.308Z"></path></svg></li>
+        <li>Votre billet personnalisé<br/>est disponible à l'accueil</li> 
+        </ol>
+        </div>
     </body>
     <script>
         var letters = {{{letters}}};
