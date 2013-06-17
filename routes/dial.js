@@ -12,7 +12,6 @@ exports.index = function(req, res) {
 };
 
 var fs = require("fs");
-red = require("redis").createClient(6379, "localhost");
 
 exports.update = function(req, res) {
 	fs.readFile('base.txt', 'utf8', function(err, data) {
