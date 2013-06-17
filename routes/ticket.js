@@ -15,23 +15,21 @@ sunrise = moment("06:00", "HH:mm");
 sunset = moment("18:00", "HH:mm");
 
 exports.updateDaylight = function(req, res) {
-	http.get({
-		host : "www.earthtools.org",
-		path : "/sun/43.612809/3.878124/" + moment().date() + "/" + (moment().month() + 1) + "/99/0"
-	}).on('response', function(response) {
+	request.get("http://www.earthtools.org/sun/43.612809/3.878124/" + moment().date() + "/" + (moment().month() + 1) + "/99/0", {
+		proxy : process.env.HTTP_PROXY
+	}, function(error, response, body) {
 		response.setEncoding('utf8');
-		response.on('data', function(data) {
-			parseString(data, function(err, result) {
-				sunrise = moment(result.sun.morning[0].sunrise[0], "HH:mm");
-				sunset = moment(result.sun.evening[0].sunset[0], "HH:mm");
-				console.log(sunrise._i, sunset._i);
-				if (res)
-					res.json({
-						sunrise : sunrise,
-						sunset : sunset
-					});
-			});
+		parseString(body, function(err, result) {
+			sunrise = moment(result.sun.morning[0].sunrise[0], "HH:mm");
+			sunset = moment(result.sun.evening[0].sunset[0], "HH:mm");
+			console.log(sunrise._i, sunset._i);
+			if (res)
+				res.json({
+					sunrise : sunrise,
+					sunset : sunset
+				});
 		});
+
 	});
 };
 
@@ -68,8 +66,7 @@ function microblogGet(data, fn) {
 		}
 		if (mb.i !== "")
 			data.what = "<img src='" + mb.i + "'/>";
-		data.context = moment.unix(mb.d).fromNow()+" dans<br/><em>mb.lapanacee.org</em>";
-		+" " + mb.a;
+		data.context = moment.unix(mb.d).fromNow() + " dans<br/><em>www.lapanacee.org/fil</em>"; +" " + mb.a;
 		fn(data);
 	});
 }
@@ -117,7 +114,7 @@ exports.index = function(req, res) {
 	}
 	data.fsign = (Math.random() < 0.5 ? '-' : '+') + Math.floor(10 + Math.random() * 5);
 
-	var funChoice = [microblogGet, textopolyGet];
+	var funChoice = [microblogGet,microblogGet,microblogGet, textopolyGet];
 
 	funChoice[Math.floor(funChoice.length*Math.random())](data, function(data) {
 		data.context = data.hello + '<br/>' + data.context;
