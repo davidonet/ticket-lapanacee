@@ -114,9 +114,7 @@ exports.index = function(req, res) {
 	}
 	data.fsign = (Math.random() < 0.5 ? '-' : '+') + Math.floor(10 + Math.random() * 5);
 
-	var funChoice = microblogGet;	
-
-	funChoice[Math.floor(funChoice.length*Math.random())](data, function(data) {
+	microblogGet(data, function(data) {
 		data.context = data.hello + '<br/>' + data.context;
 		res.render('ticket', data);
 	});
