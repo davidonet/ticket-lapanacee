@@ -6,6 +6,10 @@ var async = require('async');
 var phantom = require('node-phantom');
 var childProcess = require('child_process');
 var querystring = require("querystring");
+var winston = require('winston');
+
+winston.add(winston.transports.File, { filename: '/var/log/ticket.log' });
+
 request.defaults({
 	proxy : process.env.HTTP_PROXY
 });
@@ -84,6 +88,7 @@ function microblogGet(data, fn) {
 	});
 }
 
+
 exports.index = function(req, res) {
 	var data = {
 		date : "Jeudi 18 juillet 2013",
@@ -100,6 +105,7 @@ exports.index = function(req, res) {
 	}
 	data.date = moment().format("dddd D MMMM YYYY");
 	data.time = moment().format("HH[h]mm");
+	winston.info(req.params.name);
 	if ((!req.params.name) || (req.params.name.length < 2)) {
 		req.params.name = "";
 		data.bigname = '~~~';
