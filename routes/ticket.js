@@ -107,7 +107,7 @@ exports.index = function(req, res) {
 			if (1 < name.length)
 				data.bigname += name[Math.floor(1 + ((name.length - 1) * Math.random()))];
 			else
-				data.bigname += name[0];
+				data.bigname += " ";
 			data.bigname += req.params.name[req.params.name.length - 1];
 		}
 		if (req.params.name.length == 3)
