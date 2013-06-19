@@ -56,17 +56,30 @@ function microblogGet(data, fn) {
 		proxy : process.env.HTTP_PROXY
 	}, function(error, response, body) {
 		var mb = JSON.parse(body).microblog[0].post;
-		console.log(mb.b);
 		data.what = mb.b.replace(/\n/g, '<br/>');
-		;
 		data.fsize = 42 - Math.floor(3 * Math.sqrt((data.what.length / 6)));
 		if (data.what.length < 5) {
 			data.fsize = 300;
 			data.what = "?!";
 		}
-		if (mb.i !== "")
+		data.context = "Message envoyé " + moment.unix(mb.d).fromNow() + "<br/>";
+
+		if (mb.i !== "") {
 			data.what = "<img src='" + mb.i + "'/>";
-		data.context = "Message envoyé " + moment.unix(mb.d).fromNow();
+			if (mb.b !== "") {
+
+				if (mb.b.length < 30) {
+					data.context += mb.b;
+				} else {
+					data.context += mb.b.slice(0, 27);
+					data.context += "...";
+				}
+				data.context += "<br/>&nbsp;";
+			}
+		} else {
+			data.context += "&nbsp;";
+		}
+
 		fn(data);
 	});
 }
@@ -106,8 +119,12 @@ exports.index = function(req, res) {
 			var name = req.params.name.slice(1, -1).replace(/[aeiou]/ig, '');
 			if (1 < name.length)
 				data.bigname += name[Math.floor(1 + ((name.length - 1) * Math.random()))];
-			else
-				data.bigname += " ";
+			else {
+				if (1 == name.length)
+					data.bigname += name[0];
+				else
+					data.bigname += " ";
+			}
 			data.bigname += req.params.name[req.params.name.length - 1];
 		}
 		if (req.params.name.length == 3)
