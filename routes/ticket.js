@@ -20,9 +20,9 @@ exports.updateDaylight = function(req, res) {
 	}, function(error, response, body) {
 		response.setEncoding('utf8');
 		parseString(body, function(err, result) {
-			sunrise = moment(result.sun.morning[0].sunrise[0], "HH:mm");
-			sunset = moment(result.sun.evening[0].sunset[0], "HH:mm");
-			console.log(sunrise._i, sunset._i);
+			sunrise = moment(result.sun.morning[0].sunrise[0], "HH:mm").add('h', 1);
+			sunset = moment(result.sun.evening[0].sunset[0], "HH:mm").add('h', 1);
+			console.log(sunrise, sunset);
 			if (res)
 				res.json({
 					sunrise : sunrise,
