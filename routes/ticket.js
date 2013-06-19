@@ -66,7 +66,7 @@ function microblogGet(data, fn) {
 		}
 		if (mb.i !== "")
 			data.what = "<img src='" + mb.i + "'/>";
-		data.context = "Message envoyé "+ moment.unix(mb.d).fromNow();
+		data.context = "Message envoyé " + moment.unix(mb.d).fromNow();
 		fn(data);
 	});
 }
@@ -110,6 +110,8 @@ exports.index = function(req, res) {
 				data.bigname += name[0];
 			data.bigname += req.params.name[req.params.name.length - 1];
 		}
+		if (req.params.name.length == 3)
+			data.bigname = req.params.name;
 		data.bigname = data.bigname.toUpperCase();
 	}
 	data.fsign = (Math.random() < 0.5 ? '-' : '+') + Math.floor(10 + Math.random() * 5);
