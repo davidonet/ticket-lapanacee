@@ -1,12 +1,6 @@
 exports.index = function(req, res) {
-	var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ-";
-	var letters = [];
-	for (var i in alphabet) {
-		letters.push(alphabet[i]);
-	}
 	res.render('dial', {
-		title : 'La Panacée',
-		letters :  JSON.stringify(letters)
+		title : 'La Panacée'
 	});
 
 };
