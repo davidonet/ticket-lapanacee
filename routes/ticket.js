@@ -66,7 +66,7 @@ function microblogGet(data, fn) {
 			data.fsize = 300;
 			data.what = "?!";
 		}
-		data.context = "Message envoyé " + moment.unix(mb.d).fromNow() + "<br/>";
+		data.context = moment.unix(mb.d).fromNow() + "<br/>";
 
 		if (mb.i !== "") {
 			data.what = "<img src='" + mb.i + "'/>";
@@ -105,7 +105,6 @@ exports.index = function(req, res) {
 	}
 	data.date = moment().format("dddd D MMMM YYYY");
 	data.time = moment().format("HH[h]mm");
-	winston.info(req.params.name);
 	if ((!req.params.name) || (req.params.name.length < 2)) {
 		req.params.name = "";
 		data.bigname = '~~~';
@@ -149,7 +148,12 @@ exports.submit = function(req, res) {
 	var it = new Array(req.body.number);
 	for (var i = 0; i < req.body.number; i++)
 		it[i] = i;
-	console.log(it);
+	
+        winston.info(req.body.name);
+
+        if(req.body.email)
+                winston.info('email '+req.body.email);
+
 	var pf = "";
 	var wf = "";
 	async.each(it, function(item, fn) {
