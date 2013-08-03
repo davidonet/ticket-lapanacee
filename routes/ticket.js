@@ -8,7 +8,9 @@ var childProcess = require('child_process');
 var querystring = require("querystring");
 var winston = require('winston');
 
-winston.add(winston.transports.File, { filename: '/var/log/ticket.log' });
+winston.add(winston.transports.File, {
+	filename : '/var/log/ticket.log'
+});
 
 request.defaults({
 	proxy : process.env.HTTP_PROXY
@@ -88,7 +90,6 @@ function microblogGet(data, fn) {
 	});
 }
 
-
 exports.index = function(req, res) {
 	var data = {
 		date : "Jeudi 18 juillet 2013",
@@ -106,6 +107,18 @@ exports.index = function(req, res) {
 	data.date = moment().format("dddd D MMMM YYYY");
 	data.time = moment().format("HH[h]mm");
 	winston.info(req.params.name);
+	var aLog = [{
+		type : 'ticketPanacee',
+		time : new Date(),
+		data : {
+			name : req.params.name
+		}
+	}];
+	request.post("http://178.32.64.76/1.0/event/put", {
+		proxy : process.env.HTTP_PROXY,
+		body : JSON.stringify(aLog)
+	});
+
 	if ((!req.params.name) || (req.params.name.length < 2)) {
 		req.params.name = "";
 		data.bigname = '~~~';
@@ -212,3 +225,4 @@ exports.submit = function(req, res) {
 		});
 	});
 };
+
