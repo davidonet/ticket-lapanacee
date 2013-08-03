@@ -68,7 +68,7 @@ function microblogGet(data, fn) {
 			data.fsize = 300;
 			data.what = "?!";
 		}
-		data.context = "Message envoyé " + moment.unix(mb.d).fromNow() + "<br/>";
+		data.context = moment.unix(mb.d).fromNow() + "<br/>";
 
 		if (mb.i !== "") {
 			data.what = "<img src='" + mb.i + "'/>";
@@ -162,7 +162,12 @@ exports.submit = function(req, res) {
 	var it = new Array(req.body.number);
 	for (var i = 0; i < req.body.number; i++)
 		it[i] = i;
-	console.log(it);
+
+	winston.info(req.body.name);
+
+	if (req.body.email)
+		winston.info('email ' + req.body.email);
+
 	var pf = "";
 	var wf = "";
 	async.each(it, function(item, fn) {
