@@ -106,18 +106,6 @@ exports.index = function(req, res) {
 	}
 	data.date = moment().format("dddd D MMMM YYYY");
 	data.time = moment().format("HH[h]mm");
-	winston.info(req.params.name);
-	var aLog = [{
-		type : 'ticketPanacee',
-		time : new Date(),
-		data : {
-			name : req.params.name
-		}
-	}];
-	request.post("http://log.bype.org/1.0/event/put", {
-		proxy : process.env.HTTP_PROXY,
-		body : JSON.stringify(aLog)
-	});
 
 	if ((!req.params.name) || (req.params.name.length < 2)) {
 		req.params.name = "";
@@ -152,6 +140,18 @@ exports.index = function(req, res) {
 	}
 	data.fsign = (Math.random() < 0.5 ? '-' : '+') + Math.floor(10 + Math.random() * 5);
 
+	winston.info(req.params.name);
+	var aLog = [{
+		type : 'ticketPanacee',
+		time : new Date(),
+		data : {
+			name : req.params.name
+		}
+	}];
+	request.post("http://log.bype.org/1.0/event/put", {
+		proxy : process.env.HTTP_PROXY,
+		body : JSON.stringify(aLog)
+	});
 	microblogGet(data, function(data) {
 		data.context = data.hello + '<br/>' + data.context;
 		res.render('ticket', data);
@@ -162,11 +162,6 @@ exports.submit = function(req, res) {
 	var it = new Array(req.body.number);
 	for (var i = 0; i < req.body.number; i++)
 		it[i] = i;
-
-	winston.info(req.body.name);
-
-	if (req.body.email)
-		winston.info('email ' + req.body.email);
 
 	var pf = "";
 	var wf = "";
