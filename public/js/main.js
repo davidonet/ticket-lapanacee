@@ -4,5 +4,12 @@ requirejs.config({
 	}
 });
 require(["jquery", "lib/jquery.form"], function($) {
-	
+	$('.ticketForm').ajaxForm({
+		beforeSubmit : function(arr, $form, options) {
+			$('#overlay').fadeIn();
+		},
+		success : function() {
+			$('#overlay').fadeOut();
+		}
+	});
 });

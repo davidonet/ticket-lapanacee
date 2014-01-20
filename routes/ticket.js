@@ -158,7 +158,7 @@ exports.submit = function(req, res) {
 	var wf = "";
 	winston.info("ticket", {
 		name : req.body.name || "~",
-		nb : 0+parseInt(req.body.number) || 1
+		nb : 0 + parseInt(req.body.number) || 1
 	});
 	async.each(it, function(item, fn) {
 		wf += '/tmp/' + item + 'ticket.png ';
@@ -176,8 +176,7 @@ exports.submit = function(req, res) {
 					page.render('/tmp/' + item + 'ticket.png', function() {
 
 						ph.exit();
-						var conProc = childProcess.exec('convert /tmp/' + item + 'ticket.png  -black-threshold 70% -depth 1 -density 85 /tmp/' + item + 
-'ticket_th.ps', function(error, stdout, stderr) {
+						var conProc = childProcess.exec('convert /tmp/' + item + 'ticket.png  -black-threshold 70% -depth 1 -density 85 /tmp/' + item + 'ticket_th.ps', function(error, stdout, stderr) {
 
 							if (error) {
 								console.log(error.stack);
@@ -216,7 +215,9 @@ exports.submit = function(req, res) {
 					console.log('Signal received: ' + error.signal);
 				}
 			});
-			res.redirect('/');
+			res.json({
+				success : true
+			});
 		});
 	});
 };
