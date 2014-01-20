@@ -175,7 +175,7 @@ exports.submit = function(req, res) {
 		pf += '/tmp/' + item + 'ticket_th.ps ';
 		phantom.create(function(err, ph) {
 			ph.createPage(function(err, page) {
-				var url = "http://localhost:5100/ticket";
+				var url = "http://localhost/ticket";
 				if (req.body.name)
 					url += "/" + encodeURIComponent(req.body.name);
 				page.open(url, function() {
