@@ -1,5 +1,5 @@
 var fs = require('fs');
-var jsdom = require('jsdom')
+var jsdom = require('jsdom');
 var $;
 var svgCt;
 fs.readFile('data/panacee.svg', function(err, xml) {
@@ -8,11 +8,13 @@ fs.readFile('data/panacee.svg', function(err, xml) {
 		throw err;
 	jsdom.env({
 		html : xml,
-		scripts : ['http://localhost:5100/js/lib/jquery-1.9.1.min.js']
-	}, function(err, window) {
-		$ = window.jQuery;
-		$('g').attr('transform', 'translate(32 0)');
+		scripts : ['http://localhost:5100/js/lib/jquery-1.9.1.min.js'],
+		done : function(err, window) {
+			$ = window.jQuery;
+			$('g').attr('transform', 'translate(32 0)');
+		}
 	});
+
 });
 
 function randomizeLogo() {
@@ -42,7 +44,7 @@ exports.logo_png = function(req, res) {
 		'Content-Type' : 'image/png',
 	});
 	fs.writeFile('/tmp/logo.svg', $('svg')[0].outerHTML, function(err) {
-		var conv = im.convert(['/tmp/logo.svg','-crop','701x173','png:-']);
+		var conv = im.convert(['/tmp/logo.svg', '-crop', '701x173', 'png:-']);
 		conv.on('data', function(data) {
 			res.write(data, 'binary');
 		});
