@@ -192,7 +192,7 @@ exports.submit = function(req, res) {
 			});
 		});
 	}, function(err) {
-		var printProc = childProcess.exec('cat ' + pf, function(error, stdout, stderr) {
+		var printProc = childProcess.exec('lpr ' + pf, function(error, stdout, stderr) {
 			if (error) {
 				console.log(error.stack);
 				console.log('Error code: ' + error.code);
