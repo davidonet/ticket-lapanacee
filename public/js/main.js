@@ -12,4 +12,7 @@ require(["jquery", "lib/jquery.form"], function($) {
 			$('#overlay').fadeOut();
 		}
 	});
+	setInterval(function() {
+		$.get("/heartbeat/web");
+	}, 20000);
 });

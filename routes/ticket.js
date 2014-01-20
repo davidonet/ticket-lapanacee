@@ -42,6 +42,16 @@ exports.updateDaylight = function(req, res) {
 	});
 };
 
+exports.heartbeat = function(req, res) {
+	winston.info("heartbeat", {
+		client : req.params.client,
+		ping : 1.0
+	});
+	res.json({
+		success : true
+	});
+};
+
 exports.updateDaylight();
 
 function textopolyGet(data, fn) {

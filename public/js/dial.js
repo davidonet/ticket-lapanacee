@@ -31,4 +31,7 @@ require(["jquery", "lib/raphael-min"], function($) {
 			isDark = false;
 		}
 	});
+	setInterval(function() {
+		$.get("/heartbeat/dial");
+	}, 20000);
 });

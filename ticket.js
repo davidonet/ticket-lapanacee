@@ -26,10 +26,11 @@ app.configure('development', function() {
 });
 
 app.get('/', routes.index);
-app.get('/dial',dial.index)
+app.get('/dial',dial.index);
+app.get('/heartbeat/:client',ticket.heartbeat);
 app.get('/queryname/:prefix',dial.query);
 app.get('/queryname',dial.query);
-app.get('/dialupdate',dial.update)
+app.get('/dialupdate',dial.update);
 app.get('/ticket/:name', ticket.index);
 app.post('/ticket/submitTicket', ticket.submit);
 app.get('/ticket', ticket.index);
