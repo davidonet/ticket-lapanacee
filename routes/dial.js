@@ -30,10 +30,8 @@ exports.query = function(req, res) {
 	var key = '_root';
 	if (req.params.prefix)
 		key = req.params.prefix.toUpperCase();
-
 	red.smembers(key, function(err, ret) {
 		ret.sort();
 		res.json(ret);
 	});
-
-}
+};

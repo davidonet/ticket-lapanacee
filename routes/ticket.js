@@ -232,3 +232,16 @@ exports.submit = function(req, res) {
 	});
 };
 
+var Provider = require('sensation/src'), request = require('superagent');
+var provider = new Provider();
+
+provider.on('temperature', function(temperature) {
+	var that = this;
+	winston.log("info", "temperature", {
+		temperature : parseInt(temperature)
+	});
+});
+
+provider.start(30000);
+
+
