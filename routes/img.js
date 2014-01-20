@@ -41,14 +41,13 @@ exports.logo_png = function(req, res) {
 	res.writeHead('200', {
 		'Content-Type' : 'image/png',
 	});
-
-	var conv = im.convert(['svg:-', 'png:-'])
-	conv.on('data', function(data) {
-		res.write(data, 'binary');
+	fs.writeFile('/tmp/logo.svg', $('svg')[0].outerHTML, function(err) {
+		var conv = im.convert(['/tmp/logo.svg','-crop','701x173','png:-']);
+		conv.on('data', function(data) {
+			res.write(data, 'binary');
+		});
+		conv.on('end', function() {
+			res.end();
+		});
 	});
-	conv.on('end', function() {
-		res.end();
-	});
-	conv.stdin.write($('svg')[0].outerHTML);
-	conv.stdin.end();
 };

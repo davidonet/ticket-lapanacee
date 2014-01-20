@@ -7,9 +7,9 @@ var phantom = require('node-phantom');
 var childProcess = require('child_process');
 var querystring = require("querystring");
 var winston = require('winston');
-
-winston.add(winston.transports.File, {
-	filename : '/var/log/ticket.log'
+var Graylog2 = require('winston-graylog2').Graylog2;
+winston.add(Graylog2, {
+	graylogHost : "log.bype.org"
 });
 
 request.defaults({
@@ -28,7 +28,10 @@ exports.updateDaylight = function(req, res) {
 		parseString(body, function(err, result) {
 			sunrise = moment(result.sun.morning[0].sunrise[0], "HH:mm").add('h', 1);
 			sunset = moment(result.sun.evening[0].sunset[0], "HH:mm").add('h', 1);
-			console.log(sunrise, sunset);
+			winston.info("sun time", {
+				sunrise : result.sun.morning[0].sunrise[0],
+				sunset : result.sun.evening[0].sunset[0]
+			});
 			if (res)
 				res.json({
 					sunrise : sunrise,
@@ -140,18 +143,6 @@ exports.index = function(req, res) {
 	}
 	data.fsign = (Math.random() < 0.5 ? '-' : '+') + Math.floor(10 + Math.random() * 5);
 
-	winston.info(req.params.name);
-	var aLog = [{
-		type : 'ticketPanacee',
-		time : new Date(),
-		data : {
-			name : req.params.name
-		}
-	}];
-	request.post("http://log.bype.org/1.0/event/put", {
-		proxy : process.env.HTTP_PROXY,
-		body : JSON.stringify(aLog)
-	});
 	microblogGet(data, function(data) {
 		data.context = data.hello + '<br/>' + data.context;
 		res.render('ticket', data);
@@ -165,6 +156,10 @@ exports.submit = function(req, res) {
 
 	var pf = "";
 	var wf = "";
+	winston.info("ticket", {
+		name : req.body.name || "~",
+		number : parseInt(req.body.number) || 1
+	});
 	async.each(it, function(item, fn) {
 		wf += '/tmp/' + item + 'ticket.png ';
 		pf += '/tmp/' + item + 'ticket_th.png ';
@@ -197,8 +192,7 @@ exports.submit = function(req, res) {
 			});
 		});
 	}, function(err) {
-		console.log(pf);
-		var printProc = childProcess.exec('lpr ' + pf, function(error, stdout, stderr) {
+		var printProc = childProcess.exec('cat ' + pf, function(error, stdout, stderr) {
 			if (error) {
 				console.log(error.stack);
 				console.log('Error code: ' + error.code);
