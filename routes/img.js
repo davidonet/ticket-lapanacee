@@ -44,7 +44,7 @@ exports.logo_png = function(req, res) {
 		'Content-Type' : 'image/png',
 	});
 	fs.writeFile('/tmp/logo.svg', $('svg')[0].outerHTML, function(err) {
-		var conv = im.convert(['/tmp/logo.svg', '-crop', '701x173', 'png:-']);
+		var conv = im.convert(['/tmp/logo.svg', 'png:-']);
 		conv.on('data', function(data) {
 			res.write(data, 'binary');
 		});
