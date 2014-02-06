@@ -71,10 +71,10 @@ function textopolyGet(data, fn) {
 }
 
 function microblogGet(data, fn) {
-	request.get("http://pan.lapanacee.org/api/mb", {
+	request.get("http://www.lapanacee.org/fr/fil/flux_json", {
 		proxy : process.env.HTTP_PROXY
 	}, function(error, response, body) {
-		var mb = JSON.parse(body).microblog[0].post;
+		var mb = JSON.parse(body).fils[0].fil;
 		data.what = mb.b.replace(/\n/g, '<br/>');
 		data.fsize = 42 - Math.floor(3 * Math.sqrt((data.what.length / 6)));
 		if (data.what.length < 5) {
@@ -83,7 +83,7 @@ function microblogGet(data, fn) {
 		}
 		data.context = moment.unix(mb.d).fromNow() + "<br/>";
 
-		if (mb.i !== "") {
+		if (mb.i !== null) {
 			data.what = "<img src='" + mb.i + "'/>";
 			if (mb.b !== "") {
 
