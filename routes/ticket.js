@@ -14,7 +14,9 @@ var logThat = function (type, data) {
     data['facility'] = type;
     data['host'] = 'ticketServer';
     data['level'] = 6;
-    client.post('gelf', data, function (err, res, body) { return console.log(res.statusCode); });
+    client.post('gelf', data, function (err, res, body) {
+        return console.log(res.statusCode);
+    });
 };
 
 request.defaults({
@@ -239,5 +241,4 @@ exports.submit = function (req, res) {
             });
         });
     });
->>>>>>> e45ef44e0124e77defa0b0fba1758a5b3b23313e
 };
