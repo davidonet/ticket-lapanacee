@@ -81,8 +81,8 @@ function microblogGet(data, fn) {
 			data.fsize = 300;
 			data.what = "?!";
 		}
-		data.context = moment.unix(mb.d).fromNow() + "<br/>";
-
+		data.context = moment(mb.d).fromNow()+'<br/>';
+		
 		if (mb.i !== null) {
 			data.what = "<img src='" + mb.i + "'/>";
 			if (mb.b !== "") {
@@ -154,7 +154,7 @@ exports.index = function(req, res) {
 	data.fsign = (Math.random() < 0.5 ? '-' : '+') + Math.floor(10 + Math.random() * 5);
 
 	microblogGet(data, function(data) {
-		data.context = data.hello + '<br/>' + data.context;
+		data.context = data.hello + ' ' + data.context;
 		res.render('ticket', data);
 	});
 };
@@ -181,7 +181,7 @@ exports.submit = function(req, res) {
 				page.open(url, function() {
 					page.viewportSize = {
 						width : 640,
-						height : 1024
+						height : 1400
 					};
 					page.render('/tmp/' + item + 'ticket.png', function() {
 

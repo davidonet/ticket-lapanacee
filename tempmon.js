@@ -3,7 +3,7 @@ var provider = new Provider();
 var winston = require('winston');
 var Graylog2 = require('winston-graylog2').Graylog2;
 winston.add(Graylog2, {
-	graylogHost : "log.bype.org"
+	graylogHost : "bocde.montpellier.fr"
 });
 provider.on('error', function(error) {
 	console.log('Error:', error);
