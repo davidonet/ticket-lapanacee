@@ -7,21 +7,25 @@ var phantom = require('node-phantom');
 var childProcess = require('child_process');
 var querystring = require("querystring");
 
+request.defaults({
+    proxy: process.env.HTTP_PROXY
+});
+
 var logThat = function (type, data) {
     data['short_message'] = type;
     data['facility'] = type;
     data['host'] = 'ticketServer';
     data['level'] = 6;
-    request.post('http://gelf.bype.org/gelf', {
-        json: data
-    }, function (err, res, body) {
-        return console.log(res.statusCode);
-    });
+    request({
+            method: 'POST',
+            url: 'http://gelf.bype.org/gelf',
+            proxy: process.env.HTTP_PROXY,
+            json: data,
+        },
+        function (err, res, body) {
+            return console.log(res.statusCode);
+        });
 };
-
-request.defaults({
-    proxy: process.env.HTTP_PROXY
-});
 
 moment.lang("fr");
 sunrise = moment("06:00", "HH:mm");
