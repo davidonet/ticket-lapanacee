@@ -1,24 +1,23 @@
 {
-  "name": "APILaPanacee",
-  "version": "0.0.1",
-  "private": true,
-  "scripts": {
-    "start": "node ticket.js"
-  },
-  "dependencies": {
-    "express": "3.0.6",
-    "hjs": "*",
-    "less-middleware": "*",
-    "jsdom": "*",
-    "imagemagick": "*",
-    "moment": "*",
-    "xml2js": "*",
-    "node-phantom": "*",
-    "redis": "*",
-    "async": "*",
-    "request": "*",
-    "winston": "*",
-    "winston-graylog2": "~0.1.10",
-    "superagent": "~0.16.0"
-  }
+    "name": "APILaPanacee",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+        "start": "node ticket.js"
+    },
+    "dependencies": {
+        "express": "3.0.6",
+        "hjs": "*",
+        "less-middleware": "*",
+        "jsdom": "*",
+        "imagemagick": "*",
+        "moment": "*",
+        "xml2js": "*",
+        "node-phantom": "*",
+        "redis": "*",
+        "async": "*",
+        "request": "*",
+        "request-json": "*",
+        "superagent": "~0.16.0"
+    }
 }
