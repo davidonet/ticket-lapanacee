@@ -6,15 +6,15 @@ var async = require('async');
 var phantom = require('node-phantom');
 var childProcess = require('child_process');
 var querystring = require("querystring");
-var requestjson = require('request-json');
-var client = requestjson.newClient('http://gelf.bype.org/');
 
 var logThat = function (type, data) {
     data['short_message'] = type;
     data['facility'] = type;
     data['host'] = 'ticketServer';
     data['level'] = 6;
-    client.post('gelf', data, function (err, res, body) {
+    request.post('http://gelf.bype.org/gelf', {
+        json: data
+    }, function (err, res, body) {
         return console.log(res.statusCode);
     });
 };
