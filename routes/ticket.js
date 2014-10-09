@@ -83,7 +83,12 @@ function textopolyGet(data, fn) {
 
 function microblogGet(data, fn) {
     request.get("http://www.lapanacee.org/fr/fil/flux_json", {
-        proxy: process.env.HTTP_PROXY
+        proxy: process.env.HTTP_PROXY,
+        headers: {
+            "Cache-Control": "no-cache, no-store, must-revalidate",
+            "Pragma": "no-cache",
+            "Expires": 0
+        }
     }, function (error, response, body) {
         var mb = JSON.parse(body).fils[0].fil;
         data.what = mb.b.replace(/\n/g, '<br/>');
@@ -92,7 +97,7 @@ function microblogGet(data, fn) {
             data.fsize = 300;
             data.what = "?!";
         }
-        data.context = moment.unix(mb.d).fromNow() + "<br/>";
+        data.context = moment(mb.d).fromNow() + "<br/>";
 
         if (mb.i !== null) {
             data.what = "<img src='" + mb.i + "'/>";
