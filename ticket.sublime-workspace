@@ -1,0 +1,316 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"log",
+				"logThat"
+			],
+			[
+				"marg",
+				"margin-top"
+			],
+			[
+				"mar",
+				"margin-left"
+			],
+			[
+				"margin",
+				"margin-right"
+			],
+			[
+				"color",
+				"colorpool"
+			],
+			[
+				"font",
+				"font-size"
+			],
+			[
+				"rd",
+				"rtdata"
+			],
+			[
+				"le",
+				"length"
+			],
+			[
+				"dat",
+				"databadge"
+			],
+			[
+				"font-",
+				"font-family"
+			],
+			[
+				"back",
+				"background-color"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "routes/ticket.js",
+			"settings":
+			{
+				"buffer_size": 8323,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 192.0,
+		"selected_items":
+		[
+			[
+				"git",
+				"Package Control: Install Package"
+			],
+			[
+				"js",
+				"JSHint"
+			],
+			[
+				"jshi",
+				"JSHint"
+			],
+			[
+				"jsh",
+				"JSHint"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"jsb",
+				"Javascript Beautify"
+			],
+			[
+				"in",
+				"Package Control: Install Package"
+			],
+			[
+				"jshin",
+				"JSHint"
+			],
+			[
+				"jshint",
+				"JSHint"
+			],
+			[
+				"pa",
+				"Package Control: Install Package"
+			],
+			[
+				"pack",
+				"Preferences: Browse Packages"
+			]
+		],
+		"width": 467.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/home/dolivari/dev/ticket-lapanacee",
+		"/home/dolivari/dev/ticket-lapanacee/routes"
+	],
+	"file_history":
+	[
+		"/home/dolivari/dev/ticket-lapanacee/routes/dial.js",
+		"/home/dolivari/dev/ticket-lapanacee/routes/index.js",
+		"/home/dolivari/dev/ticket-lapanacee/package.json",
+		"/home/dolivari/dev/ticket-lapanacee/routes/ticket.js",
+		"/home/dolivari/dev/crFustibal/public/js/main.js",
+		"/home/dolivari/dev/crFustibal/public/js/badge.js",
+		"/home/dolivari/dev/crFustibal/public/img/data/baby.svg",
+		"/home/dolivari/dev/crFustibal/public/img/data/people.svg",
+		"/home/dolivari/dev/crFustibal/public/img/baby.svg",
+		"/home/dolivari/dev/crFustibal/public/css/style.less",
+		"/home/dolivari/dev/crFustibal/routes/index.js",
+		"/home/dolivari/dev/crFustibal/fustibal.js",
+		"/home/dolivari/dev/crFustibal/public/js/rtdata.js",
+		"/home/dolivari/dev/crFustibal/public/js/news.js",
+		"/home/dolivari/dev/crFustibal/public/js/ui.js",
+		"/home/dolivari/.config/sublime-text-3/Packages/HTML-CSS-JS Prettify/.jsbeautifyrc",
+		"/home/dolivari/.config/sublime-text-3/Packages/JSHint Gutter/.jshintrc",
+		"/home/dolivari/.config/sublime-text-3/Packages/JSHint Gutter/JSHint.sublime-settings",
+		"/home/dolivari/dev/crFustibal/views/layout.jade",
+		"/home/dolivari/.config/sublime-text-3/Packages/User/Preferences.sublime-settings",
+		"/home/dolivari/dev/idmotiptr/bricoleur/index.ejs",
+		"/home/dolivari/dev/idmotiptr/js/main.js",
+		"/home/dolivari/dev/idmotiptr/index.ejs",
+		"/home/dolivari/dev/idmotiptr/bricoleur/js/main.js",
+		"/opt/backup/Projects/David_Olivari/dev/apimtnlab/server.js"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"wins",
+			"b ",
+			".deta"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "routes/ticket.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8323,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3458,
+								3458
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 900.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 34.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "ticket.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 240.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

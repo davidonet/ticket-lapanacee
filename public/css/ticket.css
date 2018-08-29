@@ -1,0 +1,82 @@
+@import 'reset.css';
+@import 'fonts/stylesheet.css';
+body {
+  font-family: decima_monoregular;
+  font-size: 18pt;
+  width: 640px;
+  border: solid 1px #fff;
+  -webkit-font-smoothing: none;
+  background-color: white;
+  color: black;
+  padding: 0 0 0 0;
+  margin: 0 0 0 0;
+  overflow: hidden;
+  /*
+	 border: solid 1px grey;
+	 */
+}
+em {
+  font-style: italic;
+}
+.logopan,
+.logomtp {
+  margin-top: 34px;
+  text-align: center;
+  width: 100%;
+  height: 94px;
+  overflow: hidden;
+}
+.logomtp {
+  bottom: 0;
+}
+.bighello,
+.bigname {
+  text-align: left;
+  margin-left: -0.15ex;
+  font-size: 450px;
+  font-family: decima_monobold;
+  font-weight: bolder;
+  letter-spacing: -0.25ex;
+  margin-top: -0.2ex;
+  margin-bottom: -0.2ex;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+}
+.bigname {
+  margin-top: .8ex;
+}
+.intro,
+.when {
+  margin-top: 1ex;
+  margin-bottom: 1ex;
+  text-align: center;
+}
+.intro {
+  font-size: 30px;
+  font-family: decima_monoregular;
+}
+.when {
+  font-size: 30px;
+}
+.frame {
+  position: absolute;
+  top: 410px;
+  left: 95px;
+}
+.content {
+  font-family: decima_mono_ltregular;
+  vertical-align: middle;
+  background-color: white;
+  letter-spacing: -0.2ex;
+  line-height: 2ex;
+  top: 480px;
+  left: 75px;
+  position: absolute;
+  text-align: left;
+  width: 400px;
+  height: 400px;
+  font-weight: 500;
+  padding: 10px 10px 10px 10px;
+  overflow: hidden;
+  border: solid 30px black;
+}
